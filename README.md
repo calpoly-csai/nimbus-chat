@@ -1,19 +1,8 @@
-# nimbus-chat
+# Nimbus Chat
+
+A simple chat interface for interacting with the Nimbus virtual assistant.
 
 ## Project setup
-```
-npm install
-```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+1. Get the repo with `git clone` and install dependencies with `npm install`
+2. Launch a local dev server with `npm run serve`
