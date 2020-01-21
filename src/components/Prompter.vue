@@ -1,7 +1,7 @@
 <template>
   <div class="prompter">
     <img src="@/assets/nimbus-logo.png" />
-    <h2>Ask me</h2>
+    <h2>Hi there</h2>
     <div class="actions">
       <p class="current-action" ref="currentAction">{{ action }}</p>
       <p class="next-action" ref="nextAction">{{ nextAction }}</p>
@@ -22,7 +22,7 @@ export default {
         threshold: [0]
       },
       suggestions: [
-        "Where is my professor's office located?",
+        "Thanks for trying Nimbus Chat! Ask our bot something about Cal Poly.",
         "What should I take after CPE 202?",
         "What is CSAI?",
         "What is your purpose?",
@@ -50,7 +50,7 @@ export default {
     }
   },
   mounted() {
-    this.cycleActions();
+    // this.cycleActions();
   },
   beforeDestroy() {
     clearInterval(this.actionInterval);
@@ -73,6 +73,7 @@ export default {
     flex-direction: column;
     position: relative;
     width: 100%;
+    max-width: 350px;
   }
 
   .current-action {
