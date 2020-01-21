@@ -66,6 +66,13 @@ export default {
     font-size: 20px;
     font-family: inherit;
     margin: auto 10px;
+    transition: all 0.5s;
+    padding: 10px;
+
+    &:active {
+      transform: scale(0.97);
+      opacity: 0.5;
+    }
   }
 }
 </style>
