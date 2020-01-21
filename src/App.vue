@@ -4,7 +4,11 @@
       <div class="messages" ref="messages">
         <prompter v-if="!conversation.length"></prompter>
         <transition-group name="message">
-          <Message v-for="message in conversation" v-bind="message" :key="message.timestamp"></Message>
+          <Message
+            v-for="message in conversation"
+            v-bind="message"
+            :key="message.timestamp"
+          ></Message>
         </transition-group>
       </div>
 
@@ -17,7 +21,10 @@
 import Message from "./components/Message.vue";
 import Composer from "./components/Composer.vue";
 import Prompter from "./components/Prompter.vue";
+import axios from "axios";
 import { delay } from "./modules/animation";
+import firebase from "firebase/app";
+import { db } from "@/components/firebase";
 export default {
   name: "app",
   components: {
@@ -31,9 +38,13 @@ export default {
       textField: "",
       dummyResponses: [
         "Hmmm I'll think about that",
-        "I'll get back to you",
+        "No idea! I still have much to learn",
         "That depends",
-        "What do you think"
+        "I'll have to get back to you",
+        "Your guess is as good as mine",
+        "Oooof I'm stumped",
+        "Good question...",
+        "That is beyond my capabilities at the moment"
       ]
     };
   },
@@ -53,10 +64,15 @@ export default {
       let hasContent = /\w/;
       if (!hasContent.test(this.textField)) return;
       this.conversation.push({
-        text: this.textField,
+        text: this.textField.trim(),
         fromUser: true,
         timestamp: Date.now()
       });
+      db.collection("Queries")
+        .doc("RequestedQuestions")
+        .update({
+          userInput: firebase.firestore.FieldValue.arrayUnion(this.textField)
+        });
       this.textField = "";
       this.scrollToBottom();
       this.generateResponse();
