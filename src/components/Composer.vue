@@ -8,6 +8,7 @@
       @keyup.enter="sendMessage"
       ref="messageInput"
     ></div>
+    <button class="send-button" @click="sendMessage">Send</button>
   </div>
 </template>
 
@@ -35,6 +36,7 @@ export default {
   position: relative;
   padding: 15px;
   display: flex;
+  align-items: center;
   justify-content: center;
   background: white;
   width: 100%;
@@ -47,12 +49,23 @@ export default {
   }
 
   .text-field {
-    width: 250px;
-    max-width: 50%;
+    width: 30%;
+    background: whitesmoke;
+    border-radius: 7px;
+    width: 90%;
+    padding: 15px;
     height: min-content;
     font-size: 25px;
     font-family: inherit;
-    border-bottom: 1px solid var(--dark);
+  }
+
+  .send-button {
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    font-family: inherit;
+    margin: auto 10px;
   }
 }
 </style>
