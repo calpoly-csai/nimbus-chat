@@ -6,6 +6,7 @@
       contenteditable="true"
       @input="onType"
       @keyup.enter="sendMessage"
+      @keydown.enter="$event.preventDefault()"
       ref="messageInput"
     ></div>
     <button class="send-button" @click="sendMessage">Send</button>
@@ -68,6 +69,7 @@ export default {
     margin: auto 10px;
     transition: all 0.5s;
     padding: 10px;
+    user-select: none;
 
     &:active {
       transform: scale(0.97);
