@@ -24,7 +24,7 @@ export function tween(range, duration, callback, ease = easeInCubic) {
 
 /**
  * delays code execution asynchronously
- * @param {number} ms number of miliseconds to delay
+ * @param {number} ms number of milliseconds to delay
  */
 export function delay(ms) {
   return new Promise(resolve => {

@@ -4,11 +4,7 @@
       <div class="messages" ref="messages">
         <prompter v-if="!conversation.length"></prompter>
         <transition-group name="message">
-          <Message
-            v-for="message in conversation"
-            v-bind="message"
-            :key="message.timestamp"
-          ></Message>
+          <Message v-for="message in conversation" v-bind="message" :key="message.timestamp"></Message>
         </transition-group>
       </div>
 
@@ -48,9 +44,14 @@ export default {
         timestamp: Date.now()
       });
       this.scrollToBottom();
-      let response = await axios.post("ask", {
-        question: text
-      });
+      let response;
+      try {
+        response = await axios.post("ask", {
+          question: text
+        });
+      } catch (err) {
+        return console.error(err);
+      }
       if (!response.answer) return;
       this.conversation.push({
         text: response.answer,
