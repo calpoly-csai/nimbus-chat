@@ -23,8 +23,6 @@ import Composer from "./components/Composer.vue";
 import Prompter from "./components/Prompter.vue";
 import axios from "axios";
 import { delay } from "./modules/animation";
-import firebase from "firebase/app";
-import { db } from "@/components/firebase";
 export default {
   name: "app",
   components: {
@@ -35,47 +33,31 @@ export default {
   data() {
     return {
       conversation: [],
-      textField: "",
-      dummyResponses: [
-        "Hmmm I'll think about that",
-        "No idea! I still have much to learn",
-        "That depends",
-        "I'll have to get back to you",
-        "Your guess is as good as mine",
-        "Oooof I'm stumped",
-        "Good question...",
-        "That is beyond my capabilities at the moment"
-      ]
+      textField: ""
     };
   },
   methods: {
-    async generateResponse() {
-      await delay(1500);
-      let i = (Math.random() * (this.dummyResponses.length - 1)) >> 0;
+    async sendMessage() {
+      let hasContent = /\w/;
+      if (!hasContent.test(this.textField)) return;
+      let text = this.textField.trim();
+      this.textField = "";
       this.conversation.push({
-        text: this.dummyResponses[i],
+        text,
+        fromUser: true,
+        timestamp: Date.now()
+      });
+      this.scrollToBottom();
+      let response = await axios.post("ask", {
+        question: text
+      });
+      if (!response.answer) return;
+      this.conversation.push({
+        text: response.answer,
         fromUser: false,
         timestamp: Date.now()
       });
       this.scrollToBottom();
-    },
-    sendMessage() {
-      console.log("send");
-      let hasContent = /\w/;
-      if (!hasContent.test(this.textField)) return;
-      this.conversation.push({
-        text: this.textField.trim(),
-        fromUser: true,
-        timestamp: Date.now()
-      });
-      db.collection("Queries")
-        .doc("RequestedQuestions")
-        .update({
-          userInput: firebase.firestore.FieldValue.arrayUnion(this.textField)
-        });
-      this.textField = "";
-      this.scrollToBottom();
-      this.generateResponse();
     },
     scrollToBottom() {
       let { messages } = this.$refs;
