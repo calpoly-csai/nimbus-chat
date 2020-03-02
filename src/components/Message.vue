@@ -15,7 +15,7 @@ export default {
 
 <style lang="scss">
 .message-container {
-  padding: 5px 20px;
+  padding: 5px 10px;
   color: white;
   width: 100%;
   text-align: left;
@@ -41,7 +41,8 @@ export default {
     font-size: 17px;
     background: var(--base);
     padding: 15px;
-    max-width: 60%;
+    max-width: 80%;
+    word-break: break-word;
 
     &::after {
       position: absolute;
