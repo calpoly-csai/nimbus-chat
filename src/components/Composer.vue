@@ -7,6 +7,7 @@
       @input="onType"
       @keyup.enter="sendMessage"
       @keydown.enter="$event.preventDefault()"
+      @paste="pasteText"
       ref="messageInput"
     ></div>
     <button class="send-button" @click="sendMessage">Send</button>
@@ -27,6 +28,13 @@ export default {
     sendMessage() {
       this.$refs.messageInput.innerText = "";
       this.$emit("send");
+    },
+    pasteText(e) {
+      e.preventDefault();
+      console.log("test");
+      let text = (e.originalEvent || e).clipboardData.getData("text/plain");
+      debugger;
+      e.target.innerText = text;
     }
   }
 };
