@@ -44,15 +44,17 @@ export default {
         timestamp: Date.now()
       });
       this.scrollToBottom();
-      let response;
+      let answer;
       try {
-        response = await axios.post("ask", {
+        let response = await axios.post("ask", {
           question: text
         });
+        answer = response.data.answer;
       } catch (err) {
         return console.error(err);
+        answer =
+          "RRRRRI'm sorry, I don't understand. Please try another question.";
       }
-      let { answer } = response.data;
       if (!answer) return;
       this.conversation.push({
         text: answer,
