@@ -52,9 +52,10 @@ export default {
       } catch (err) {
         return console.error(err);
       }
-      if (!response.answer) return;
+      let { answer } = response.data;
+      if (!answer) return;
       this.conversation.push({
-        text: response.answer,
+        text: answer,
         fromUser: false,
         timestamp: Date.now()
       });
