@@ -66,6 +66,7 @@ export default {
     height: min-content;
     font-size: 25px;
     font-family: inherit;
+    hyphens: auto;
   }
 
   .send-button {

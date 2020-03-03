@@ -43,6 +43,7 @@ export default {
     padding: 15px;
     max-width: 80%;
     word-break: break-word;
+    hyphens: auto;
 
     &::after {
       position: absolute;
