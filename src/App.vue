@@ -21,7 +21,7 @@
         </transition-group>
       </div>
 
-      <Composer v-model="textField" @send="sendMessage" />
+      <Composer v-model="textField" @send="sendMessage" ref="composer" />
     </div>
   </div>
 </template>
@@ -111,6 +111,8 @@ export default {
       console.log("recieved feedback");
     },
     useExample(text) {
+      //Not great practice, but its better performance than a watcher
+      this.$refs.composer.$refs.messageInput.innerText = text;
       this.textField = text;
       this.status = "chatting";
     }
