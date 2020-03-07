@@ -32,6 +32,7 @@ export default {
     opacity: 0;
     transition: opacity 0.7s;
     background: #76d4ffce;
+    color: white;
     pointer-events: none;
     border-radius: 7px;
   }
