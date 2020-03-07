@@ -21,6 +21,11 @@ export default {
       type: String
     }
   },
+  watch: {
+    value(val) {
+      this.$refs.messageInput.innerText = val;
+    }
+  },
   methods: {
     onType(event) {
       this.$emit("input", event.target.innerText);
