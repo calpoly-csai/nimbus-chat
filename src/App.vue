@@ -2,13 +2,19 @@
   <div id="app">
     <div class="content">
       <div class="messages" ref="messages">
-        <prompter v-if="!conversation.length"></prompter>
+        <prompter v-if="!conversation.length" />
         <transition-group name="message">
-          <Message v-for="message in conversation" v-bind="message" :key="message.timestamp"></Message>
+          <Message
+            v-for="message in conversation"
+            v-bind="message"
+            :key="message.timestamp"
+            @feedback="sendFeedback($event, message.timestamp)"
+          />
+          <typing-indicator v-if="status === 'thinking'" />
         </transition-group>
       </div>
 
-      <Composer v-model="textField" @send="sendMessage"></Composer>
+      <Composer v-model="textField" @send="sendMessage" />
     </div>
   </div>
 </template>
@@ -17,6 +23,7 @@
 import Message from "./components/Message.vue";
 import Composer from "./components/Composer.vue";
 import Prompter from "./components/Prompter.vue";
+import TypingIndicator from "./components/TypingIndicator.vue";
 import axios from "axios";
 import { delay } from "./modules/animation";
 export default {
@@ -24,12 +31,17 @@ export default {
   components: {
     Message,
     Composer,
-    Prompter
+    Prompter,
+    TypingIndicator
   },
   data() {
     return {
       conversation: [],
-      textField: ""
+      textField: "",
+      /**The different states of the Chat UI
+       * @enum {"chatting", "thinking", "suggesting"}
+       */
+      status: "chatting"
     };
   },
   methods: {
@@ -43,6 +55,7 @@ export default {
         fromUser: true,
         timestamp: Date.now()
       });
+      this.status = "thinking";
       this.scrollToBottom();
       let answer;
       try {
@@ -51,16 +64,16 @@ export default {
         });
         answer = response.data.answer;
       } catch (err) {
-        return console.error(err);
-        answer =
-          "RRRRRI'm sorry, I don't understand. Please try another question.";
+        console.error(err);
+        answer = "I'm sorry, I don't understand. Please try another question.";
       }
-      if (!answer) return;
+      this.status = "chatting";
       this.conversation.push({
         text: answer,
         fromUser: false,
         timestamp: Date.now()
       });
+
       this.scrollToBottom();
     },
     scrollToBottom() {
@@ -72,6 +85,21 @@ export default {
           behavior: "smooth"
         });
       }, 500);
+    },
+    sendFeedback(isPositive, messageTimestamp) {
+      if (isPositive) return; //Only dealing with issues right now
+      let exchange = [];
+      let messageIndex = this.conversation.findIndex(
+        message => message.timestamp === messageTimestamp
+      );
+      if (messageIndex === -1)
+        return console.error("Could not locate message for feedback");
+      do {
+        exchange.unshift(this.conversation[messageIndex]);
+        messageIndex--;
+      } while (messageIndex >= 0 && this.conversation[messageIndex].fromUser);
+      // axios.post("/feedback", exchange);
+      console.log("recieved feedback");
     }
   }
 };
@@ -111,6 +139,7 @@ body {
     height: 100%;
     max-width: 750px;
     padding: 15px 30px;
+    padding-bottom: 0;
     margin: 0 auto;
     box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.158);
 
@@ -133,12 +162,10 @@ h1 {
 }
 
 .message {
-  &-enter-active,
-  &-leave-active {
+  &-enter-active {
     transition: all 0.7s;
   }
-  &-enter,
-  &-leave-to {
+  &-enter {
     transform: translateY(20px) scale(0.95);
     opacity: 0;
   }
