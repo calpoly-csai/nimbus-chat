@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <div class="content">
+      <nav-bar />
       <div class="messages" ref="messages">
         <prompter v-if="!conversation.length" />
         <transition-group name="message">
@@ -20,6 +21,7 @@
 </template>
 
 <script>
+import NavBar from "./components/NavBar.vue";
 import Message from "./components/Message.vue";
 import Composer from "./components/Composer.vue";
 import Prompter from "./components/Prompter.vue";
@@ -29,6 +31,7 @@ import { delay } from "./modules/animation";
 export default {
   name: "app",
   components: {
+    NavBar,
     Message,
     Composer,
     Prompter,
@@ -113,6 +116,7 @@ html,
 body {
   height: 100%;
   width: 100%;
+  margin: 0;
 }
 
 #app {
