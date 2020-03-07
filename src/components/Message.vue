@@ -1,27 +1,45 @@
 <template>
   <div class="message-container" :class="{'from-user': fromUser}">
     <p class="message">{{text}}</p>
+    <message-feedback v-if="!fromUser && pendingFeedback" @feedback="sendFeedback"></message-feedback>
   </div>
 </template>
 
 <script>
+import MessageFeedback from "@/components/MessageFeedback";
 export default {
+  components: {
+    MessageFeedback
+  },
   props: {
     fromUser: Boolean,
     text: String
+  },
+  data() {
+    return {
+      pendingFeedback: true
+    };
+  },
+  methods: {
+    sendFeedback(isPositive) {
+      console.log("feedback message recieved");
+      this.pendingFeedback = false;
+      this.$emit("feedback", isPositive);
+    }
   }
 };
 </script>
 
 <style lang="scss">
 .message-container {
+  display: flex;
+  justify-content: flex-start;
   padding: 5px 10px;
   color: white;
   width: 100%;
-  text-align: left;
 
   &.from-user {
-    text-align: right;
+    justify-content: flex-end;
     .message {
       background: var(--accent);
       &::after {
