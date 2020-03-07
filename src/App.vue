@@ -1,7 +1,13 @@
 <template>
   <div id="app">
     <div class="content">
-      <nav-bar />
+      <nav class="nav-bar">
+        <img class="icon" src="@/assets/help.svg" alt="help" @click="status = 'suggesting'" />
+      </nav>
+      <transition name="roll">
+        <query-examples v-if="status === 'suggesting'" @select="useExample" />
+      </transition>
+
       <div class="messages" ref="messages">
         <prompter v-if="!conversation.length" />
         <transition-group name="message">
@@ -21,7 +27,7 @@
 </template>
 
 <script>
-import NavBar from "./components/NavBar.vue";
+import QueryExamples from "./components/QueryExamples.vue";
 import Message from "./components/Message.vue";
 import Composer from "./components/Composer.vue";
 import Prompter from "./components/Prompter.vue";
@@ -31,7 +37,7 @@ import { delay } from "./modules/animation";
 export default {
   name: "app",
   components: {
-    NavBar,
+    QueryExamples,
     Message,
     Composer,
     Prompter,
@@ -103,6 +109,10 @@ export default {
       } while (messageIndex >= 0 && this.conversation[messageIndex].fromUser);
       // axios.post("/feedback", exchange);
       console.log("recieved feedback");
+    },
+    useExample(text) {
+      this.textField = text;
+      this.status = "chatting";
     }
   }
 };
@@ -136,6 +146,7 @@ body {
   width: 100%;
 
   .content {
+    position: relative;
     display: flex;
     flex-direction: column;
     background: white;
@@ -146,6 +157,14 @@ body {
     padding-bottom: 0;
     margin: 0 auto;
     box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.158);
+
+    .nav-bar {
+      text-align: right;
+      .icon {
+        cursor: pointer;
+        height: 45px;
+      }
+    }
 
     .prompter {
       position: absolute;
@@ -165,6 +184,9 @@ h1 {
   font-size: 43px;
 }
 
+//ANIMATIONS
+//==============================================
+
 .message {
   &-enter-active {
     transition: all 0.7s;
@@ -172,6 +194,17 @@ h1 {
   &-enter {
     transform: translateY(20px) scale(0.95);
     opacity: 0;
+  }
+}
+
+.roll {
+  &-enter-active,
+  &-leave-active {
+    transition: height 0.7s;
+  }
+  &-enter,
+  &-leave-to {
+    height: 0px;
   }
 }
 </style>
