@@ -1,6 +1,11 @@
 <template>
   <div class="query-examples">
     <h2>Stuff Nimbus Knows</h2>
+    <ion-icon
+      class="close-icon"
+      name="close-circle"
+      @click="requestClose">
+    </ion-icon>
     <ul class="example-list">
       <li
         v-for="example in examples"
@@ -23,6 +28,9 @@ export default {
   methods: {
     selectExample(e) {
       this.$emit("select", e.target.innerText);
+    },
+    requestClose() {
+      this.$emit("close");
     }
   }
 };
@@ -39,9 +47,15 @@ export default {
   width: 100%;
   height: 100%;
   overflow-y: scroll;
-
   h2 {
     text-align: center;
+  }
+  .close-icon {
+    position: fixed;
+    top: 0;
+    font-size: 2em;
+    cursor: pointer;
+    padding: 5px;
   }
   .example-list {
     list-style: none;
