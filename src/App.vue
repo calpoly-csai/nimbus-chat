@@ -5,7 +5,7 @@
         <img class="icon" src="@/assets/help.svg" alt="help" @click="status = 'suggesting'" />
       </nav>
       <transition name="roll">
-        <query-examples v-if="status === 'suggesting'" @select="useExample" />
+        <query-examples v-if="status === 'suggesting'" @select="useExample" @close="closeExample"/>
       </transition>
 
       <div class="messages" ref="messages">
@@ -114,6 +114,9 @@ export default {
       //Not great practice, but its better performance than a watcher
       this.$refs.composer.$refs.messageInput.innerText = text;
       this.textField = text;
+      this.status = "chatting";
+    },
+    closeExample() {
       this.status = "chatting";
     }
   }
