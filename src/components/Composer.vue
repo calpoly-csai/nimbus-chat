@@ -33,6 +33,7 @@ export default {
       e.preventDefault();
       let text = (e.originalEvent || e).clipboardData.getData("text/plain");
       e.target.innerText = text;
+      this.onType(e);
     }
   }
 };
