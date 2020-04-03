@@ -31,9 +31,7 @@ export default {
     },
     pasteText(e) {
       e.preventDefault();
-      console.log("test");
       let text = (e.originalEvent || e).clipboardData.getData("text/plain");
-      debugger;
       e.target.innerText = text;
     }
   }
