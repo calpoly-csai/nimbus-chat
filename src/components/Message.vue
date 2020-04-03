@@ -7,6 +7,8 @@
 
 <script>
 import MessageFeedback from "@/components/MessageFeedback";
+const catchAllMessage =
+  "I'm sorry, I don't understand. Please try another question.";
 export default {
   components: {
     MessageFeedback
@@ -26,6 +28,10 @@ export default {
       this.pendingFeedback = false;
       this.$emit("feedback", isPositive);
     }
+  },
+  created() {
+    //TODO: Impliment a server side solution, where the response object contains boolean of whether the question was answered.
+    this.pendingFeedback = this.text !== catchAllMessage;
   }
 };
 </script>
