@@ -62,7 +62,7 @@ export default {
     width: 90%;
     padding: 15px;
     height: min-content;
-    font-size: 25px;
+    font-size: 20px;
     font-family: inherit;
     hyphens: auto;
   }
