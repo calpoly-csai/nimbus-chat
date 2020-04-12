@@ -2,10 +2,19 @@
   <div id="app">
     <div class="content">
       <nav class="nav-bar">
-        <img class="icon" src="@/assets/help.svg" alt="help" @click="status = 'suggesting'" />
+        <img
+          class="icon"
+          src="@/assets/help.svg"
+          alt="help"
+          @click="status = 'suggesting'"
+        />
       </nav>
       <transition name="roll">
-        <query-examples v-if="status === 'suggesting'" @select="useExample" @close="closeExample"/>
+        <query-examples
+          v-if="status === 'suggesting'"
+          @select="useExample"
+          @close="closeExample"
+        />
       </transition>
 
       <div class="messages" ref="messages">
@@ -97,18 +106,21 @@ export default {
     },
     sendFeedback(isPositive, messageTimestamp) {
       if (isPositive) return; //Only dealing with issues right now
-      let exchange = [];
+
       let messageIndex = this.conversation.findIndex(
         message => message.timestamp === messageTimestamp
       );
       if (messageIndex === -1)
         return console.error("Could not locate message for feedback");
-      do {
-        exchange.unshift(this.conversation[messageIndex]);
-        messageIndex--;
-      } while (messageIndex >= 0 && this.conversation[messageIndex].fromUser);
-      // axios.post("/feedback", exchange);
-      console.log("recieved feedback");
+      let payload = {
+        question: this.conversation[messageIndex - 1].text,
+        answer: this.conversation[messageIndex].text,
+        type: "other",
+        timestamp: Math.floor(Date.now() / 1000)
+      };
+      axios
+        .post("/new_data/feedback", payload)
+        .catch(err => console.error(err));
     },
     useExample(text) {
       //Not great practice, but its better performance than a watcher
