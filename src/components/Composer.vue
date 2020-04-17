@@ -42,7 +42,7 @@ export default {
 <style lang="scss">
 .composer {
   position: relative;
-  padding: 15px;
+  padding: 15px 0;
   display: flex;
   align-items: center;
   justify-content: center;
