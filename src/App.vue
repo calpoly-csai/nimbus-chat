@@ -2,19 +2,10 @@
   <div id="app">
     <div class="content">
       <nav class="nav-bar">
-        <img
-          class="icon"
-          src="@/assets/help.svg"
-          alt="help"
-          @click="status = 'suggesting'"
-        />
+        <img class="icon" src="@/assets/help.svg" alt="help" @click="status = 'suggesting'" />
       </nav>
       <transition name="roll">
-        <query-examples
-          v-if="status === 'suggesting'"
-          @select="useExample"
-          @close="closeExample"
-        />
+        <query-examples v-if="status === 'suggesting'" @select="useExample" @close="closeExample" />
       </transition>
 
       <div class="messages" ref="messages">
